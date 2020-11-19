@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "115776790955",
+    "firebase_url": "https://dini-cet343-7cc84.firebaseio.com",
+    "project_id": "dini-cet343-7cc84",
+    "storage_bucket": "dini-cet343-7cc84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115776790955:android:74cd9a195c524a6195f2ee",
+        "android_client_info": {
+          "package_name": "com.example.do_i_need_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115776790955-0a2fq8gjdd6a5f3pu5g25iheg9laacub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJPYAMaXIPZxIXXhnYrcpeNSqk8BTqmTk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115776790955-0a2fq8gjdd6a5f3pu5g25iheg9laacub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
