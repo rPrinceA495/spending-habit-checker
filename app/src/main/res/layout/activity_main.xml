@@ -18,8 +18,8 @@
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:fabCradleMargin="10dp"
-        app:fabCradleVerticalOffset="2dp"
+        app:fabCradleMargin="6dp"
+        app:fabCradleVerticalOffset="3dp"
         app:fabCradleRoundedCornerRadius="20dp"
         android:layout_gravity="bottom">
 

@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_person"/>
 
     <item android:id="@+id/my_products_link"
-        android:title="@string/my_items_link"
+        android:title="@string/products_link"
         android:icon="@drawable/ic_cart"/>
 
     <item android:id="@+id/help_link"

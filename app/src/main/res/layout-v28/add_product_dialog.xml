@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="480dp"
+    android:orientation="vertical"
+    android:padding="2dp"
+    android:background="#121212"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/closeBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textColor="#f4f4f4"
+        android:text="@string/x"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:background="@drawable/circle_bg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="18dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/add_product"
+            android:textColor="#d1ccbc"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/prodTitle"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_border"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/title"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/prodWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_border"
+            android:ems="10"
+            android:hint="@string/website_url"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="13sp"
+            android:gravity="center"
+            />
+
+        <EditText
+            android:id="@+id/prodPrice"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_border"
+            android:ems="10"
+            android:hint="@string/price"
+            android:layout_marginBottom="6dp"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textSize="13sp"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@color/colorAccent">
+
+
+                <ImageButton
+                    android:id="@+id/prodImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_image"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Image"
+                    android:textSize="13sp"
+                    android:textColor="#f4f4f4"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary">
+
+                <ImageButton
+                    android:id="@+id/prodLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_location" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Location"
+                    android:textSize="13sp"
+                    android:textColor="#f4f4f4"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_marginTop="15dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_btn_border"
+            android:text="@string/add"
+            app:backgroundTint="@color/colorPrimaryDark" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:text="@string/personal_information"
             android:textColor="#d1ccbc"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="7dp"
             android:fontFamily="sans-serif"
             />
 
@@ -196,7 +198,8 @@
         android:text="@string/product_summary"
         android:textColor="#d1ccbc"
         android:layout_marginTop="18dp"
-        android:textSize="16sp"
+        android:layout_marginBottom="5dp"
+        android:textSize="18sp"
         android:fontFamily="sans-serif"
         />
 
@@ -300,7 +303,7 @@
         android:text="@string/money_spent_vs_money_saved"
         android:textColor="#d1ccbc"
         android:layout_marginTop="18dp"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:fontFamily="sans-serif"
         />
 

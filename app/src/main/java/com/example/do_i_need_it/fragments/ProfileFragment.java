@@ -78,7 +78,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         final String TAG = "TAG";
         ImageView profile;
@@ -91,21 +91,21 @@ public class ProfileFragment extends Fragment {
         FirebaseFirestore fStore;
 
         // Personal Info
-        profile = Objects.requireNonNull(v.findViewById(R.id.profile));
-        fullNameDisplay = Objects.requireNonNull(v.findViewById(R.id.fullNameDisplay));
-        emailDisplay = Objects.requireNonNull(v.findViewById(R.id.emailDisplay));
-        dobDisplay = Objects.requireNonNull(v.findViewById(R.id.dobDisplay));
-        phoneNumberDisplay = Objects.requireNonNull(v.findViewById(R.id.phoneNumberDisplay));
-        countryDisplay = Objects.requireNonNull(v.findViewById(R.id.countryDisplay));
+        profile = Objects.requireNonNull(view.findViewById(R.id.profile));
+        fullNameDisplay = Objects.requireNonNull(view.findViewById(R.id.fullNameDisplay));
+        emailDisplay = Objects.requireNonNull(view.findViewById(R.id.emailDisplay));
+        dobDisplay = Objects.requireNonNull(view.findViewById(R.id.dobDisplay));
+        phoneNumberDisplay = Objects.requireNonNull(view.findViewById(R.id.phoneNumberDisplay));
+        countryDisplay = Objects.requireNonNull(view.findViewById(R.id.countryDisplay));
 
         // Product Summary
-        productsDisplay = Objects.requireNonNull(v.findViewById(R.id.productsDisplay));
-        boughtDisplay = Objects.requireNonNull(v.findViewById(R.id.boughtDisplay));
-        discardedDisplay = Objects.requireNonNull(v.findViewById(R.id.discardedDisplay));
+        productsDisplay = Objects.requireNonNull(view.findViewById(R.id.productsDisplay));
+        boughtDisplay = Objects.requireNonNull(view.findViewById(R.id.boughtDisplay));
+        discardedDisplay = Objects.requireNonNull(view.findViewById(R.id.discardedDisplay));
 
         // Spent vs Saved
-        moneySpentDisplay = Objects.requireNonNull(v.findViewById(R.id.moneySpentDisplay));
-        moneySavedDisplay = Objects.requireNonNull(v.findViewById(R.id.moneySavedDisplay));
+        moneySpentDisplay = Objects.requireNonNull(view.findViewById(R.id.moneySpentDisplay));
+        moneySavedDisplay = Objects.requireNonNull(view.findViewById(R.id.moneySavedDisplay));
 
         fAuth = FirebaseAuth.getInstance();
         fUser = fAuth.getCurrentUser();
@@ -126,6 +126,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        return v;
+        return view;
     }
 }
