@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +20,7 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailField, passwordField;
-    ImageView registerRedirect;
+    TextView registerRedirect;
     Button loginBtn;
     ProgressBar progressBar;
     FirebaseAuth fAuth;

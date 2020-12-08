@@ -10,18 +10,22 @@
         android:id="@+id/imageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginBottom="472dp"
+        android:layout_marginBottom="500dp"
         android:src="@drawable/auth_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/login_email"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginRight="46dp"
         android:background="@drawable/rounded_border"
         android:drawableStart="@drawable/ic_email"
         android:drawableLeft="@drawable/ic_email"
@@ -38,9 +42,13 @@
 
     <EditText
         android:id="@+id/login_password"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginRight="46dp"
         android:background="@drawable/rounded_border"
         android:drawableStart="@drawable/ic_lock"
         android:drawableLeft="@drawable/ic_lock"
@@ -55,11 +63,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_email" />
 
+
     <Button
         android:id="@+id/login_btn"
         android:layout_width="164dp"
         android:layout_height="40dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/rounded_btn_border"
         android:text="@string/sign_in_btn_txt"
         android:textColor="#FFFFFF"
@@ -70,26 +79,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
-    <ImageView
-        android:id="@+id/redirect_register"
-        android:layout_width="267dp"
-        android:layout_height="17dp"
-        android:layout_marginBottom="132dp"
-        android:onClick="redirectToRegister"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/redirect_register" />
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/redirect_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="208dp"
+        android:fontFamily="sans-serif"
+        android:onClick="redirectToRegister"
         android:text="@string/don_t_have_an_account"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
@@ -103,6 +104,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.613" />
+        app:layout_constraintVertical_bias="0.569" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
