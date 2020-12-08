@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     EditText prodTitle, prodWebsite, prodPrice;
     ImageButton prodImage, prodLocation;
     TextView closeBtn;
-    Dialog dialog ;
+    Dialog dialog;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
     FirebaseStorage storage;

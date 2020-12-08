@@ -1,37 +1,32 @@
 package com.example.do_i_need_it.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.do_i_need_it.ProductDetailsActivity;
 import com.example.do_i_need_it.R;
 import com.example.do_i_need_it.model.Product;
 import com.example.do_i_need_it.recyclerview.ProductAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +36,7 @@ import java.util.Objects;
  * Use the {@link MyProductsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyProductsFragment extends Fragment {
+public class MyProductsFragment extends Fragment implements ProductAdapter.OnProductListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +46,8 @@ public class MyProductsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    List<Product> productList = new ArrayList<>();
 
     public MyProductsFragment() {
         // Required empty public constructor
@@ -91,7 +88,8 @@ public class MyProductsFragment extends Fragment {
 
         final String TAG = "TAG";
         RecyclerView recyclerView;
-        List<Product> productList = new ArrayList<>();
+        ProgressBar productsLoader;
+        TextView noProducts;
         FirebaseAuth fAuth;
         FirebaseUser fUser;
         FirebaseFirestore fStore;
@@ -101,8 +99,12 @@ public class MyProductsFragment extends Fragment {
         fStore = FirebaseFirestore.getInstance();
 
         recyclerView = view.findViewById(R.id.recyclerView);
+        productsLoader = view.findViewById(R.id.products_loader);
+        noProducts = view.findViewById(R.id.no_products);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
+
+        productsLoader.setVisibility(View.VISIBLE);
 
         assert fUser != null;
         Query query = fStore.collection("products").whereEqualTo("prod_owner", fUser.getEmail());
@@ -124,21 +126,34 @@ public class MyProductsFragment extends Fragment {
                             product = new Product(prodId,prodTitle,prodWebsite,imageUrl,dateAdded,prodPrice);
 
                             productList.add(product);
-
-                            ProductAdapter prodAdapter = new ProductAdapter(getActivity(),productList);
-                            recyclerView.setAdapter(prodAdapter);
-
+                        }
+                        // Add Products to recyclerview
+                        ProductAdapter prodAdapter = new ProductAdapter(getActivity(), productList, this);
+                        productsLoader.setVisibility(View.GONE);
+                        recyclerView.setAdapter(prodAdapter);
+                        // Conditionally render recyclerview
+                        if(productList.size() == 0) {
+                            productsLoader.setVisibility(View.GONE);
+                            noProducts.setVisibility(View.VISIBLE);
+                        }else {
+                            noProducts.setVisibility(View.INVISIBLE);
                         }
                         Log.d(TAG, "Array Items => " + productList.size());
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
+                        productsLoader.setVisibility(View.GONE);
                     }
                 });
 
 
 
-
-
         return view;
+    }
+
+    @Override
+    public void onProductClick(int position) {
+        Intent openProduct = new Intent(getActivity(), ProductDetailsActivity.class);
+        openProduct.putExtra("product", productList.get(position));
+        startActivity(openProduct);
     }
 }

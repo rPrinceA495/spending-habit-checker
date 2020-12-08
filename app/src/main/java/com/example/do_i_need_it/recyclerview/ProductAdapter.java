@@ -20,10 +20,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     Context context;
     List<Product> productList;
+    private OnProductListener opl;
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public ProductAdapter(Context context, List<Product> productList, OnProductListener opl) {
         this.context = context;
         this.productList = productList;
+        this.opl = opl;
     }
 
     @NonNull
@@ -33,7 +35,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_product, parent, false);
 
-        return new ProductViewHolder(view);
+        return new ProductViewHolder(view, opl);
 
     }
 
@@ -66,12 +68,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return this.productList.size();
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView prodImg;
         TextView titleLabel, priceLabel, urlLabel, dateAdded;
+        OnProductListener opl;
 
-        public ProductViewHolder(@NonNull View itemView) {
+        public ProductViewHolder(@NonNull View itemView, OnProductListener opl) {
             super(itemView);
 
             prodImg = itemView.findViewById(R.id.prod_img);
@@ -79,7 +82,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             priceLabel = itemView.findViewById(R.id.price_label);
             urlLabel = itemView.findViewById(R.id.url_label);
             dateAdded = itemView.findViewById(R.id.date_added_label);
+            this.opl = opl;
+
+            itemView.setOnClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View v) {
+            opl.onProductClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnProductListener {
+        void onProductClick(int position);
     }
 }

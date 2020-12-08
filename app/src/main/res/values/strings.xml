@@ -38,4 +38,7 @@
     <string name="add_product">Add Product</string>
     <string name="x">X</string>
     <string name="products_link">Products</string>
+    <string name="mapbox_access_token">MAPBOX_ACCESS_TOKEN</string>
+    <string name="logout">Logout</string>
+    <string name="product_details">Product Details</string>
 </resources>
