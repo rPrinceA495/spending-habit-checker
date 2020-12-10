@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.do_i_need_it.LoginActivity;
 import com.example.do_i_need_it.R;
 import com.example.do_i_need_it.RegisterActivity;
 import com.google.android.material.dialog.MaterialDialogs;
@@ -80,7 +81,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fAuth.signOut();
-                startActivity(new Intent(getActivity(), RegisterActivity.class));
+                startActivity(new Intent(getActivity(), LoginActivity.class));
                 Objects.requireNonNull(getActivity()).finish();
                 Toast.makeText(getActivity(), "Logout successful.", Toast.LENGTH_SHORT).show();
             }

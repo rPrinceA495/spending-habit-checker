@@ -107,7 +107,7 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
         productsLoader.setVisibility(View.VISIBLE);
 
         assert fUser != null;
-        Query query = fStore.collection("products").whereEqualTo("prod_owner", fUser.getEmail());
+        Query query = fStore.collection("products").whereEqualTo("prod_owner", fUser.getEmail()).whereEqualTo("status", "");
         query.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

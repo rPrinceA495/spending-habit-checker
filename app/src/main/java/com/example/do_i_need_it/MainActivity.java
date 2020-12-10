@@ -89,7 +89,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+        String action = getIntent().getStringExtra("action");
+
+        if(action != null && action.equals("product status change")) {
+            // Transact to product fragment
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProductsFragment()).commit();
+        }else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+        }
 
         dialog = new Dialog(this);
 
@@ -172,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                             prod.put("image_path", imageDownloadUrl.toString());
                             prod.put("prod_owner", Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
                             prod.put("date_added", new Date().toString());
+                            prod.put("status", "");
 
                             prodDocRef.set(prod).addOnSuccessListener(aVoid -> {
 
@@ -203,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             prod.put("image_path", "");
             prod.put("prod_owner", Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
             prod.put("date_added", new Date().toString());
+            prod.put("status", "");
 
             prodDocRef.set(prod).addOnSuccessListener(aVoid -> {
 
