@@ -2,11 +2,18 @@ package com.example.do_i_need_it;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +33,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     TextView productTitle, productPrice, productUrl;
     ImageButton shareButton, editButton, mapButton, deleteButton;
     Button purchasedButton;
+    Dialog dialog;
+    Button addBtn;
+    EditText editProdTitle, editProdWebsite, editProdPrice;
+    ImageButton prodImage, prodLocation;
+    TextView closeBtn;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +47,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        dialog = new Dialog(this);
 
         Product product = (Product) getIntent().getSerializableExtra("product");
 
@@ -78,10 +92,68 @@ public class ProductDetailsActivity extends AppCompatActivity {
             startActivity(sendIntent);
         });
 
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditDialog(product);
+            }
+        });
+
         deleteButton.setOnClickListener(v -> {
             showConfirmDeleteDialog(product);
         });
 
+    }
+
+    private void showEditDialog(Product product) {
+        dialog.setContentView(R.layout.edit_product_dialog);
+        closeBtn = dialog.findViewById(R.id.closeBtn);
+        editProdTitle = dialog.findViewById(R.id.editProdTitle);
+        editProdWebsite = dialog.findViewById(R.id.editProdWebsite);
+        editProdPrice = dialog.findViewById(R.id.editProdPrice);
+        prodImage = dialog.findViewById(R.id.prodImage);
+        prodLocation = dialog.findViewById(R.id.prodLocation);
+        progressBar = dialog.findViewById(R.id.progressBar);
+        addBtn = dialog.findViewById(R.id.addBtn);
+
+        editProdTitle.setText(product.getProdTitle());
+        editProdWebsite.setText(product.getProdWebsite());
+        editProdPrice.setText(String.format("%s", product.getProdPrice()));
+
+        prodImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //chooseImage();
+            }
+        });
+
+        prodLocation = null;
+
+        addBtn.setOnClickListener(v -> {
+
+            String title = editProdTitle.getText().toString().trim();
+            String url = editProdWebsite.getText().toString().trim();
+            String price = editProdPrice.getText().toString().trim();
+
+            // Form Validation
+            if(TextUtils.isEmpty(title)) {
+                editProdTitle.setError("Product title required.");
+                return;
+            }
+            if(TextUtils.isEmpty(price)) {
+                editProdPrice.setError("Please enter product price.");
+                return;
+            }
+
+
+            //saveProduct(title, price, url);
+
+
+        });
+
+        closeBtn.setOnClickListener(v -> dialog.dismiss());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     private void showConfirmDeleteDialog(Product product) {

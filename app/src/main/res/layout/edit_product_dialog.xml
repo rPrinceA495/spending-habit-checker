@@ -33,12 +33,12 @@
             android:layout_marginBottom="18dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="@string/edit_profile"
+            android:text="Edit Product"
             android:textColor="#121212"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/prodTitle"
+            android:id="@+id/editProdTitle"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="16dp"
@@ -53,7 +53,7 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/prodWebsite"
+            android:id="@+id/editProdWebsite"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="16dp"
@@ -68,7 +68,7 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/prodPrice"
+            android:id="@+id/editProdPrice"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="6dp"
@@ -156,7 +156,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/rounded_btn_border"
-            android:text="@string/add"
+            android:text="Edit"
             app:backgroundTint="@color/colorPrimaryDark" />
 
 

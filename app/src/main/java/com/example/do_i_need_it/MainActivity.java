@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
     ProgressBar progressBar;
-    Button addBtn, cancelBtn;
+    Button addBtn;
     EditText prodTitle, prodWebsite, prodPrice;
     ImageButton prodImage, prodLocation;
     TextView closeBtn;
@@ -124,7 +124,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        prodLocation = null;
+        prodLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         addBtn.setOnClickListener(v -> {
 

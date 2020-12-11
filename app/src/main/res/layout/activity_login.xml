@@ -68,7 +68,7 @@
         android:id="@+id/login_btn"
         android:layout_width="164dp"
         android:layout_height="40dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="76dp"
         android:background="@drawable/rounded_btn_border"
         android:text="@string/sign_in_btn_txt"
         android:textColor="#FFFFFF"
@@ -83,14 +83,13 @@
         android:id="@+id/redirect_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="208dp"
+        android:layout_marginBottom="192dp"
         android:fontFamily="sans-serif"
         android:onClick="redirectToRegister"
         android:text="@string/don_t_have_an_account"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
@@ -104,6 +103,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.569" />
+        app:layout_constraintVertical_bias="0.583" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
