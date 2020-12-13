@@ -45,7 +45,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         // Binding of product item:
         holder.titleLabel.setText(productList.get(position).getProdTitle());
         holder.priceLabel.setText(String.format("$ %s", productList.get(position).getProdPrice()));
-        holder.urlLabel.setText(productList.get(position).getProdWebsite());
         holder.dateAdded.setText(String.format("Added: %s %s", productList.get(position).getDateAdded().substring(0,10), " 2020"));
 
         String imageUri = null;
@@ -59,6 +58,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     .load(imageUri).into(holder.prodImg);
         }
 
+        if(imageUri.isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.prod_img_default).into(holder.prodImg);
+        }else {
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUri).into(holder.prodImg);
+        }
+
+        if(productList.get(position).getProdStatus().equals("purchased")) {
+            holder.statusLabel.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -71,7 +81,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public static class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView prodImg;
-        TextView titleLabel, priceLabel, urlLabel, dateAdded;
+        TextView titleLabel, priceLabel, statusLabel, dateAdded;
         OnProductListener opl;
 
         public ProductViewHolder(@NonNull View itemView, OnProductListener opl) {
@@ -80,7 +90,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             prodImg = itemView.findViewById(R.id.prod_img);
             titleLabel = itemView.findViewById(R.id.title_label);
             priceLabel = itemView.findViewById(R.id.price_label);
-            urlLabel = itemView.findViewById(R.id.url_label);
+            statusLabel = itemView.findViewById(R.id.status_label);
             dateAdded = itemView.findViewById(R.id.date_added_label);
             this.opl = opl;
 

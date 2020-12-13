@@ -107,7 +107,7 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
         productsLoader.setVisibility(View.VISIBLE);
 
         assert fUser != null;
-        Query query = fStore.collection("products").whereEqualTo("prod_owner", fUser.getEmail()).whereEqualTo("status", "");
+        Query query = fStore.collection("products").whereEqualTo("prod_owner", fUser.getEmail()).whereNotEqualTo("status", "discarded");
         query.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -122,8 +122,10 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
                             String imageUrl = document.getString("image_path");
                             String dateAdded = document.getString("date_added");
                             String prodPrice = document.getString("prod_price");
+                            String prodStatus = document.getString("status");
 
                             product = new Product(prodId,prodTitle,prodWebsite,imageUrl,dateAdded,prodPrice);
+                            product.setProdStatus(prodStatus);
 
                             productList.add(product);
                         }

@@ -1,6 +1,8 @@
 package com.example.do_i_need_it;
 
 import androidx.annotation.NonNull;
+
+import android.Manifest;
 import android.app.AlertDialog;
 
 import java.text.DateFormat;
@@ -12,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +39,8 @@ import com.example.do_i_need_it.fragments.HelpFragment;
 import com.example.do_i_need_it.fragments.MyProductsFragment;
 import com.example.do_i_need_it.fragments.ProfileFragment;
 import com.example.do_i_need_it.fragments.SettingsFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +55,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +69,7 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean isPermissionGranted;
     public static final String TAG = "TAG";
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -76,6 +89,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //checkPermissions();
+
+        /*
+        if(isPermissionGranted) {
+            if(checkGooglePlayServices()) {
+                Toast.makeText(getApplicationContext(), "Google play services available", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getApplicationContext(), "Google play services unavailable", Toast.LENGTH_SHORT).show();
+            }
+        }
+        */
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -105,6 +129,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkGooglePlayServices() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+
+        int result = googleApiAvailability.isGooglePlayServicesAvailable(this);
+
+        if(result == ConnectionResult.SUCCESS) {
+            return true;
+        }else if(googleApiAvailability.isUserResolvableError(result)) {
+            Dialog dialog = googleApiAvailability.getErrorDialog(this, result, 201, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    Toast.makeText(getApplicationContext(), "Cancelled dialog.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialog.show();
+        }
+
+        return false;
+    }
+
+    // Check Permissions method
+    private void checkPermissions() {
+        Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                isPermissionGranted = true;
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                // Send User to settings
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(),"");
+                intent.setData(uri);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
+    }
+
     private void showProductDialog() {
 
         dialog.setContentView(R.layout.add_product_dialog);
@@ -113,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         prodWebsite = dialog.findViewById(R.id.prodWebsite);
         prodPrice = dialog.findViewById(R.id.prodPrice);
         prodImage = dialog.findViewById(R.id.prodImage);
-        prodLocation = dialog.findViewById(R.id.prodLocation);
         progressBar = dialog.findViewById(R.id.progressBar);
         addBtn = dialog.findViewById(R.id.addBtn);
 
@@ -124,12 +193,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        prodLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         addBtn.setOnClickListener(v -> {
 
@@ -168,41 +231,36 @@ public class MainActivity extends AppCompatActivity {
             StorageReference riversRef = storageReference.child("images/" + randomKey);
 
             riversRef.putFile(imageUri)
-                    .addOnCompleteListener(task -> riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
+                    .addOnCompleteListener(task -> riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
-                            Uri imageDownloadUrl = uri;;
+                        Uri imageDownloadUrl = uri;;
+                        // Store product details in firestore:
+                        DocumentReference prodDocRef = fStore.collection("products").document();
+                        final Map<String, Object> prod = new HashMap<>();
+                        prod.put("prod_title", title);
+                        prod.put("prod_url", url);
+                        prod.put("prod_price", price);
+                        prod.put("image_path", imageDownloadUrl.toString());
+                        prod.put("prod_owner", Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
+                        prod.put("date_added", new Date().toString());
+                        prod.put("status", "");
 
-                            // Store user details to firestore:
-                            DocumentReference prodDocRef = fStore.collection("products").document();
+                        prodDocRef.set(prod).addOnSuccessListener(aVoid -> {
 
-                            final Map<String, Object> prod = new HashMap<>();
-                            prod.put("prod_title", title);
-                            prod.put("prod_url", url);
-                            prod.put("prod_price", price);
-                            prod.put("image_path", imageDownloadUrl.toString());
-                            prod.put("prod_owner", Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
-                            prod.put("date_added", new Date().toString());
-                            prod.put("status", "");
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "New product added.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Product details successfully stored.");
+                            //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            //finish();
+                            imageUri = null;
+                            dialog.dismiss();
+                            // Transact to product fragment
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProductsFragment()).commit();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "onFailure: database ref not created.");
+                        });;
 
-                            prodDocRef.set(prod).addOnSuccessListener(aVoid -> {
-
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "New product added.", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "Product details successfully stored.");
-                                //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                //finish();
-                                imageUri = null;
-                                dialog.dismiss();
-                                // Transact to product fragment
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProductsFragment()).commit();
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                Log.i(TAG, "onFailure: database ref not created.");
-                            });;
-
-                        }
                     }));
 
         }else {

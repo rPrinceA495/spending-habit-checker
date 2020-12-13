@@ -1,16 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
     tools:context=".fragments.HelpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/application_details"
+            android:textColor="#d1ccbc"
+            android:textSize="18sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="sans-serif"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+    <View android:background="#ffffff"
+        android:layout_marginTop="18dp"
+        android:layout_width = "match_parent"
+        android:layout_height="1dp"/>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Help"
-        android:textSize="45sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adding_a_product_to_think_about"
+        android:textColor="#d1ccbc"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
         />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:baselineAligned="false">
+
+
+
+
+    </LinearLayout>
+
+    <View android:background="#ffffff"
+        android:layout_marginTop="18dp"
+        android:layout_width = "match_parent"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Managing your Products"
+        android:textColor="#d1ccbc"
+        android:layout_marginTop="18dp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:weightSum="2"
+        android:baselineAligned="false">
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -43,4 +43,9 @@
     <string name="product_details">Product Details</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="date_of_birth">Date of Birth</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="add_image">Add Image</string>
+    <string name="purchased">PURCHASED</string>
+    <string name="application_details">Application Details</string>
+    <string name="adding_a_product_to_think_about">Adding a Product to Think About</string>
 </resources>

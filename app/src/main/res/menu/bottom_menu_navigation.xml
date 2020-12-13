@@ -14,6 +14,6 @@
         />
 
     <item android:id="@+id/settings_link"
-        android:title="@string/settings_link"
-        android:icon="@drawable/ic_settings"/>
+        android:title="@string/logout"
+        android:icon="@drawable/ic_logout"/>
 </menu>

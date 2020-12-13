@@ -66,15 +66,16 @@
         app:layout_constraintTop_toTopOf="@+id/image_view" />
 
     <TextView
-        android:id="@+id/url_label"
+        android:id="@+id/status_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="100dp"
         android:fontFamily="sans-serif"
-        android:text="www.amazon.com"
-        android:textColor="@color/colorAccent"
+        android:text="@string/purchased"
+        android:visibility="invisible"
+        android:textColor="@color/green"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/prod_img"
         app:layout_constraintTop_toTopOf="@+id/image_view" />
@@ -87,7 +88,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="104dp"
         android:text="Added: 10/10/2020"
-        android:textSize="10sp"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/prod_img" />
 

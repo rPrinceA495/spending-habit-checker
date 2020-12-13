@@ -46,6 +46,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
+    // Google Play Dependency
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    // Check run time permissions
+    implementation 'com.karumi:dexter:6.2.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:+'

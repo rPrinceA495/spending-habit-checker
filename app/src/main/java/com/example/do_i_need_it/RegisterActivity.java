@@ -35,11 +35,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
         // Check Login Status
-        //if(fAuth.getCurrentUser() != null) {
-        // startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-        //finish();
-        //}
+        if(fAuth.getCurrentUser() != null) {
+         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
+        }
 
         // Hooks
         fullNameField = findViewById(R.id.full_name);
@@ -51,9 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
         dobField = findViewById(R.id.dob);
         countryField = findViewById(R.id.country);
         progressBar = findViewById(R.id.progress_bar);
-
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
 
         registerBtn.setOnClickListener(view -> {
 
@@ -106,18 +106,14 @@ public class RegisterActivity extends AppCompatActivity {
             // Store email and password for authentication
             fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()) {
-
                     userID = fAuth.getCurrentUser().getEmail();
-
                     // Store user details to firestore:
                     DocumentReference userDocRef = fStore.collection("users").document(userID);
-
                     final Map<String, Object> user = new HashMap<>();
                     user.put("full_name", fullName);
                     user.put("phone_number", phoneNumber);
                     user.put("dob", dob);
                     user.put("country", country);
-
                     userDocRef.set(user).addOnSuccessListener(aVoid -> {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Account successfully created.", Toast.LENGTH_SHORT).show();
@@ -128,7 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "onFailure: database ref not created.");
                     });;
-
                 }else {
                     Toast.makeText(getApplicationContext(), "Error! "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);

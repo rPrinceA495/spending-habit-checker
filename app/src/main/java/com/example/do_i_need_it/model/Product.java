@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    private String prodId, prodTitle, prodWebsite, imageUrl, dateAdded, prodPrice;
+    private String prodId, prodTitle, prodWebsite, imageUrl, dateAdded, prodPrice, prodStatus;
 
     public Product() {}
 
@@ -63,5 +63,13 @@ public class Product implements Serializable {
 
     public void setProdPrice(String prodPrice) {
         this.prodPrice = prodPrice;
+    }
+
+    public String getProdStatus() {
+        return prodStatus;
+    }
+
+    public void setProdStatus(String prodStatus) {
+        this.prodStatus = prodStatus;
     }
 }

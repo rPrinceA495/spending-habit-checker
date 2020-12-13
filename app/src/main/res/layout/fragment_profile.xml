@@ -62,15 +62,14 @@
             android:id="@+id/fullNameDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="28dp"
+            android:layout_toEndOf="@+id/profile"
             android:layout_toRightOf="@+id/profile"
             android:fontFamily="sans-serif"
-            android:text="Michelle Smith"
             android:textColor="#ffff"
-            android:textSize="20sp"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/profile" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/emailDisplay"
@@ -78,15 +77,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fullNameDisplay"
             android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/profile"
             android:layout_toRightOf="@+id/profile"
             android:fontFamily="sans-serif"
-            android:text="michellesmith@yahoo.com"
             android:textColor="#ffff"
-            android:textSize="14sp"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/profile" />
+            android:textSize="14sp" />
 
 
         <ImageButton
@@ -118,13 +116,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="36dp"
-            android:layout_toRightOf="@id/icon_ar"
-            android:text="04/09/1988"
-            android:textColor="#f4f4f4"
-            android:textSize="15sp"
             android:layout_marginStart="36dp"
-            android:layout_toEndOf="@id/icon_ar" />
+            android:layout_marginLeft="36dp"
+            android:layout_toEndOf="@id/icon_ar"
+            android:layout_toRightOf="@id/icon_ar"
+            android:textColor="#f4f4f4"
+            android:textSize="15sp" />
 
 
     </RelativeLayout>
@@ -146,13 +143,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="36dp"
-            android:layout_toRightOf="@id/icon_set"
-            android:text="71565652"
-            android:textColor="#f4f4f4"
-            android:textSize="15sp"
             android:layout_marginStart="36dp"
-            android:layout_toEndOf="@id/icon_set" />
+            android:layout_marginLeft="36dp"
+            android:layout_toEndOf="@id/icon_set"
+            android:layout_toRightOf="@id/icon_set"
+            android:textColor="#f4f4f4"
+            android:textSize="15sp" />
 
 
     </RelativeLayout>
@@ -176,13 +172,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="36dp"
-            android:layout_toRightOf="@id/icon_sh"
-            android:text="Botswana"
-            android:textColor="#f4f4f4"
-            android:textSize="15sp"
             android:layout_marginStart="36dp"
-            android:layout_toEndOf="@id/icon_sh" />
+            android:layout_marginLeft="36dp"
+            android:layout_toEndOf="@id/icon_sh"
+            android:layout_toRightOf="@id/icon_sh"
+            android:textColor="#f4f4f4"
+            android:textSize="15sp" />
 
 
     </RelativeLayout>
@@ -223,7 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="58"
+                android:text="0"
                 android:textColor="#f4f4f4"
                 android:textSize="20sp" />
 
@@ -249,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="11"
+                android:text="0"
                 android:textColor="#f4f4f4"
                 android:textSize="20sp" />
 
@@ -276,7 +271,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="47"
+                android:text="0"
                 android:textColor="#f4f4f4"
                 android:textSize="20sp" />
 
@@ -335,12 +330,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:fontFamily="sans-serif"
-                android:text="2186.25"
+                android:text="0.00"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:layout_marginStart="12dp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -364,7 +359,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:fontFamily="sans-serif"
-                android:text="1200.26"
+                android:text="0.00"
                 android:textColor="#f4f4f4"
                 android:textSize="20sp" />
         </LinearLayout>

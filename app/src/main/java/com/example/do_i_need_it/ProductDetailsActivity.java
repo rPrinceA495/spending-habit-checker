@@ -6,8 +6,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,15 +20,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.do_i_need_it.fragments.MyProductsFragment;
 import com.example.do_i_need_it.model.Product;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
+    public static final String TAG = "TAG";
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     ImageView productImage;
@@ -34,11 +46,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ImageButton shareButton, editButton, mapButton, deleteButton;
     Button purchasedButton;
     Dialog dialog;
-    Button addBtn;
+    Button saveBtn;
     EditText editProdTitle, editProdWebsite, editProdPrice;
     ImageButton prodImage, prodLocation;
     TextView closeBtn;
     ProgressBar progressBar;
+    FirebaseStorage storage;
+    Product product;
+    StorageReference storageReference;
+    Uri imageUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +65,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         dialog = new Dialog(this);
 
-        Product product = (Product) getIntent().getSerializableExtra("product");
+        product = (Product) getIntent().getSerializableExtra("product");
 
         productImage = findViewById(R.id.product_image);
         productTitle = findViewById(R.id.product_title);
@@ -57,7 +73,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productUrl = findViewById(R.id.product_url);
         shareButton = findViewById(R.id.share_btn);
         editButton = findViewById(R.id.edit_btn);
-        mapButton = findViewById(R.id.map_btn);
         deleteButton = findViewById(R.id.delete_btn);
         purchasedButton = findViewById(R.id.purchased_btn);
 
@@ -65,6 +80,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productTitle.setText(product.getProdTitle());
         productPrice.setText(String.format("$%s", product.getProdPrice()));
         productUrl.setText(product.getProdWebsite());
+
+        // Disable Purchased button if already purchased
+        if(product.getProdStatus().equals("purchased")) {
+            purchasedButton.setEnabled(false);
+        }
 
         String imageUri = product.getImageUrl();
 
@@ -114,7 +134,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         prodImage = dialog.findViewById(R.id.prodImage);
         prodLocation = dialog.findViewById(R.id.prodLocation);
         progressBar = dialog.findViewById(R.id.progressBar);
-        addBtn = dialog.findViewById(R.id.addBtn);
+        saveBtn = dialog.findViewById(R.id.saveBtn);
 
         editProdTitle.setText(product.getProdTitle());
         editProdWebsite.setText(product.getProdWebsite());
@@ -123,13 +143,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
         prodImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //chooseImage();
+                chooseImage();
             }
         });
 
         prodLocation = null;
 
-        addBtn.setOnClickListener(v -> {
+        saveBtn.setOnClickListener(v -> {
 
             String title = editProdTitle.getText().toString().trim();
             String url = editProdWebsite.getText().toString().trim();
@@ -146,7 +166,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
 
 
-            //saveProduct(title, price, url);
+            editProduct(title, price, url);
 
 
         });
@@ -154,6 +174,84 @@ public class ProductDetailsActivity extends AppCompatActivity {
         closeBtn.setOnClickListener(v -> dialog.dismiss());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    private void editProduct(String title, String price, String url) {
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        if(imageUri != null) {
+            final String randomKey = UUID.randomUUID().toString();
+            StorageReference riversRef = storageReference.child("images/" + randomKey);
+
+            riversRef.putFile(imageUri)
+                    .addOnCompleteListener(task -> riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                        Uri imageDownloadUrl = uri;;
+                        // Store product details in firestore:
+                        DocumentReference prodDocRef = fStore.collection("products").document(product.getProdId());
+                        final Map<String, Object> prod = new HashMap<>();
+                        prod.put("prod_title", title);
+                        prod.put("prod_url", url);
+                        prod.put("prod_price", price);
+                        prod.put("image_path", imageDownloadUrl.toString());
+
+                        prodDocRef.update(prod).addOnSuccessListener(aVoid -> {
+
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Product details updated.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Product details updated.");
+                            //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            //finish();
+                            imageUri = null;
+                            dialog.dismiss();
+                            // Back to products
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("action", "product status change");
+                            startActivity(intent);
+                            finish();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "onFailure: update failed.");
+                        });;
+
+                    }));
+
+        }else {
+            // Store product details to firestore:
+            DocumentReference prodDocRef = fStore.collection("products").document(product.getProdId());
+
+            final Map<String, Object> prod = new HashMap<>();
+            prod.put("prod_title", title);
+            prod.put("prod_url", url);
+            prod.put("prod_price", price);
+            prod.put("image_path", "");
+
+            prodDocRef.update(prod).addOnSuccessListener(aVoid -> {
+
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Product details updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Product details updated.");
+                //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                //finish();
+                dialog.dismiss();
+                // Back to products
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("action", "product status change");
+                startActivity(intent);
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onFailure: Update failed.");
+            });;
+        }
+
     }
 
     private void showConfirmDeleteDialog(Product product) {
@@ -190,6 +288,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
             ref.update("status", "purchased" ).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    // Back to My Products List
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("action", "product status change");
+                    startActivity(intent);
+                    finish();
                     Toast.makeText(getApplicationContext(), "Product marked as purchased.", Toast.LENGTH_SHORT).show();
                 }
             });

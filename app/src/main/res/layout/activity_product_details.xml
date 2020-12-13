@@ -131,16 +131,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="left"
+                        android:layout_marginRight="35dp"
                         android:src="@drawable/ic_edit"/>
 
-                    <ImageButton
-                        android:id="@+id/map_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:src="@drawable/ic_location"/>
+
 
                     <ImageButton
                         android:id="@+id/delete_btn"

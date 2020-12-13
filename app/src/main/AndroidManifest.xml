@@ -3,9 +3,10 @@
     package="com.example.do_i_need_it">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,20 +15,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Do_I_Need_It">
-        <activity android:name=".ProductDetailsActivity"></activity>
+        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".ProductDetailsActivity" />
         <activity android:name=".LocationPicker" />
         <activity android:name=".LoginActivity">
 
         </activity>
         <activity android:name=".RegisterActivity">
-
-        </activity>
-        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
+
         </activity>
 
         <meta-data
@@ -38,7 +40,9 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyADI0h-cdgHA698LP8MYNEwezBp8LUWkbc" />
     </application>
 
 </manifest>
