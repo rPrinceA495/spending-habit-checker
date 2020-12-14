@@ -17,20 +17,22 @@
             android:layout_height="wrap_content"
             android:text="@string/application_details"
             android:textColor="#d1ccbc"
-            android:textSize="18sp"
-            android:layout_marginTop="18dp"
+            android:textSize="19sp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="7dp"
             android:fontFamily="sans-serif"
             />
 
-
-
     </RelativeLayout>
 
 
-
-
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/app_details"
+        android:textColor="#d1ccbc"
+        android:textSize="14sp" />
 
     <View android:background="#ffffff"
         android:layout_marginTop="18dp"
@@ -42,11 +44,19 @@
         android:layout_height="wrap_content"
         android:text="@string/adding_a_product_to_think_about"
         android:textColor="#d1ccbc"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="5dp"
-        android:textSize="18sp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="7dp"
+        android:textSize="19sp"
         android:fontFamily="sans-serif"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/add_product_details"
+        android:textColor="#d1ccbc"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,10 +81,29 @@
         android:layout_height="wrap_content"
         android:text="Managing your Products"
         android:textColor="#d1ccbc"
-        android:layout_marginTop="18dp"
-        android:textSize="18sp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="7dp"
+        android:textSize="19sp"
         android:fontFamily="sans-serif"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/to_manage_product"
+        android:textColor="#d1ccbc"
+        android:layout_marginBottom="5dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/to_share_product"
+        android:textColor="#d1ccbc"
+        android:layout_marginBottom="5dp"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

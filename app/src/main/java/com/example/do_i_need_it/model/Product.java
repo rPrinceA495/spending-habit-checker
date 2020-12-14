@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    private String prodId, prodTitle, prodWebsite, imageUrl, dateAdded, prodPrice, prodStatus;
+    private String prodId, prodTitle, prodWebsite, imageUrl, dateAdded, prodStatus;
+    double prodPrice;
 
     public Product() {}
 
-    public Product(String prodId, String prodTitle, String prodWebsite, String imageUrl, String dateAdded, String prodPrice) {
+    public Product(String prodId, String prodTitle, String prodWebsite, String imageUrl, String dateAdded, double prodPrice) {
         this.prodId = prodId;
         this.prodTitle = prodTitle;
         this.prodWebsite = prodWebsite;
@@ -57,11 +58,11 @@ public class Product implements Serializable {
         this.dateAdded = dateAdded;
     }
 
-    public String getProdPrice() {
+    public double getProdPrice() {
         return prodPrice;
     }
 
-    public void setProdPrice(String prodPrice) {
+    public void setProdPrice(double prodPrice) {
         this.prodPrice = prodPrice;
     }
 

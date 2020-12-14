@@ -3,24 +3,31 @@ package com.example.do_i_need_it.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
+import android.service.carrier.CarrierMessagingService;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.do_i_need_it.MainActivity;
 import com.example.do_i_need_it.ProductDetailsActivity;
 import com.example.do_i_need_it.R;
 import com.example.do_i_need_it.model.Product;
 import com.example.do_i_need_it.recyclerview.ProductAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,6 +54,10 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
     private String mParam1;
     private String mParam2;
 
+    ProductAdapter prodAdapter;
+    FirebaseAuth fAuth;
+    FirebaseUser fUser;
+    FirebaseFirestore fStore;
     List<Product> productList = new ArrayList<>();
 
     public MyProductsFragment() {
@@ -90,9 +101,6 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
         RecyclerView recyclerView;
         ProgressBar productsLoader;
         TextView noProducts;
-        FirebaseAuth fAuth;
-        FirebaseUser fUser;
-        FirebaseFirestore fStore;
 
         fAuth = FirebaseAuth.getInstance();
         fUser = fAuth.getCurrentUser();
@@ -115,13 +123,13 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
                         Product product = null;
 
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            //Log.d(TAG, document.getId() + " => " + document.getData());
                             String prodId = document.getId();
                             String prodTitle = document.getString("prod_title");
                             String prodWebsite = document.getString("prod_url");
                             String imageUrl = document.getString("image_path");
                             String dateAdded = document.getString("date_added");
-                            String prodPrice = document.getString("prod_price");
+                            double prodPrice = Double.valueOf(document.getString("prod_price"));
                             String prodStatus = document.getString("status");
 
                             product = new Product(prodId,prodTitle,prodWebsite,imageUrl,dateAdded,prodPrice);
@@ -129,16 +137,16 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
 
                             productList.add(product);
                         }
-                        // Add Products to recyclerview
-                        ProductAdapter prodAdapter = new ProductAdapter(getActivity(), productList, this);
-                        productsLoader.setVisibility(View.GONE);
-                        recyclerView.setAdapter(prodAdapter);
                         // Conditionally render recyclerview
                         if(productList.size() == 0) {
                             productsLoader.setVisibility(View.GONE);
                             noProducts.setVisibility(View.VISIBLE);
                         }else {
                             noProducts.setVisibility(View.INVISIBLE);
+                            // Add Products to recyclerview
+                            prodAdapter = new ProductAdapter(getActivity(), productList, this);
+                            productsLoader.setVisibility(View.GONE);
+                            recyclerView.setAdapter(prodAdapter);
                         }
                         Log.d(TAG, "Array Items => " + productList.size());
                     } else {
@@ -147,10 +155,55 @@ public class MyProductsFragment extends Fragment implements ProductAdapter.OnPro
                     }
                 });
 
-
+        // Declare ItemTouchHelper and attach it to recyclerview
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;
     }
+
+
+
+    // Swipe Gesture Functionality throughItemTouchHelper:
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            int position = viewHolder.getAdapterPosition();
+            DocumentReference ref = fStore.collection("products").document(productList.get(position).getProdId());
+
+            // Find direction of swipe:
+            switch(direction) {
+                case ItemTouchHelper.LEFT:
+                    productList.remove(position);
+                    prodAdapter.notifyItemRemoved(position);
+                    // Change product status to discarded in firestore:
+                    ref.update("status", "discarded" ).addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getActivity(), "Product discarded.", Toast.LENGTH_SHORT).show();
+                    });
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    // Change Product status to purchased in firestore:
+                    ref.update("status", "purchased" ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Back to My Products List
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtra("action", "product status change");
+                            startActivity(intent);
+                            Toast.makeText(getActivity(), "Product marked as purchased.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    break;
+            }
+
+        }
+    };
 
     @Override
     public void onProductClick(int position) {

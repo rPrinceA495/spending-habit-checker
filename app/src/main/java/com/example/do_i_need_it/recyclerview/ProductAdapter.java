@@ -1,5 +1,6 @@
 package com.example.do_i_need_it.recyclerview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,12 +40,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
 
         // Binding of product item:
         holder.titleLabel.setText(productList.get(position).getProdTitle());
-        holder.priceLabel.setText(String.format("$ %s", productList.get(position).getProdPrice()));
+        holder.priceLabel.setText(String.format("$ %.2f", productList.get(position).getProdPrice()));
         holder.dateAdded.setText(String.format("Added: %s %s", productList.get(position).getDateAdded().substring(0,10), " 2020"));
 
         String imageUri = null;

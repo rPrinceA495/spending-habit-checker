@@ -2,6 +2,7 @@ package com.example.do_i_need_it;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -43,12 +44,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     FirebaseFirestore fStore;
     ImageView productImage;
     TextView productTitle, productPrice, productUrl;
-    ImageButton shareButton, editButton, mapButton, deleteButton;
+    ImageButton shareButton, editButton, deleteButton;
     Button purchasedButton;
     Dialog dialog;
     Button saveBtn;
     EditText editProdTitle, editProdWebsite, editProdPrice;
-    ImageButton prodImage, prodLocation;
+    ImageButton prodImage;
     TextView closeBtn;
     ProgressBar progressBar;
     FirebaseStorage storage;
@@ -56,12 +57,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
     StorageReference storageReference;
     Uri imageUri = null;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
         fAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         fStore = FirebaseFirestore.getInstance();
         dialog = new Dialog(this);
 
@@ -78,7 +82,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         // Set product attributes to view:
         productTitle.setText(product.getProdTitle());
-        productPrice.setText(String.format("$%s", product.getProdPrice()));
+        productPrice.setText(String.format("$ %.2f", product.getProdPrice()));
         productUrl.setText(product.getProdWebsite());
 
         // Disable Purchased button if already purchased
@@ -132,7 +136,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         editProdWebsite = dialog.findViewById(R.id.editProdWebsite);
         editProdPrice = dialog.findViewById(R.id.editProdPrice);
         prodImage = dialog.findViewById(R.id.prodImage);
-        prodLocation = dialog.findViewById(R.id.prodLocation);
         progressBar = dialog.findViewById(R.id.progressBar);
         saveBtn = dialog.findViewById(R.id.saveBtn);
 
@@ -140,14 +143,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         editProdWebsite.setText(product.getProdWebsite());
         editProdPrice.setText(String.format("%s", product.getProdPrice()));
 
-        prodImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-
-        prodLocation = null;
+        prodImage.setOnClickListener(v -> chooseImage());
 
         saveBtn.setOnClickListener(v -> {
 
@@ -261,15 +257,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", (dialog, which) -> {
             // Change Product status to discarded in firestore
             DocumentReference ref = fStore.collection("products").document(product.getProdId());
-            ref.update("status", "discarded" ).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("action", "product status change");
-                    startActivity(intent);
-                    finish();
-                    Toast.makeText(getApplicationContext(), "Product discarded.", Toast.LENGTH_SHORT).show();
-                }
+            ref.update("status", "discarded" ).addOnSuccessListener(aVoid -> {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("action", "product status change");
+                startActivity(intent);
+                finish();
+                Toast.makeText(getApplicationContext(), "Product discarded.", Toast.LENGTH_SHORT).show();
             });
         });
         builder.setNegativeButton("No", (dialog, which) -> {

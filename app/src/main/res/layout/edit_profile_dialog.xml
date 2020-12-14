@@ -38,14 +38,14 @@
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/prodTitle"
+            android:id="@+id/editFullName"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_border"
             android:ems="10"
             android:gravity="center"
-            android:hint="Name"
+            android:hint="Full Name"
             android:inputType="textPersonName"
             android:padding="10dp"
             android:textColor="#000"
@@ -53,14 +53,14 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/prodWebsite"
+            android:id="@+id/editPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_border"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/website_url"
+            android:hint="@string/phone_number"
             android:inputType="textWebEmailAddress"
             android:padding="10dp"
             android:textColor="#000"
@@ -68,14 +68,14 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/prodPrice"
+            android:id="@+id/editCountry"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginBottom="6dp"
             android:background="@drawable/rounded_border"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/price"
+            android:hint="@string/country"
             android:inputType="number"
             android:padding="10dp"
             android:textColor="#000"
@@ -98,7 +98,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/prodImage"
+                    android:id="@+id/profileImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_image"/>
@@ -106,36 +106,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Image"
+                    android:text="@string/add_profile_image"
                     android:textSize="13sp"
                     android:textColor="#f4f4f4"/>
 
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:gravity="center"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary">
-
-                <ImageButton
-                    android:id="@+id/prodLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Location"
-                    android:textSize="13sp"
-                    android:textColor="#f4f4f4"/>
-
-            </LinearLayout>
-
 
 
         </LinearLayout>
@@ -151,12 +127,12 @@
             android:visibility="invisible" />
 
         <Button
-            android:id="@+id/addBtn"
+            android:id="@+id/saveProfileBtn"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/rounded_btn_border"
-            android:text="@string/add"
+            android:text="Save Changes"
             app:backgroundTint="@color/colorPrimaryDark" />
 
 
