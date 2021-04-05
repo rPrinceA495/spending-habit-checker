@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Check Login Status
         if(fAuth.getCurrentUser() != null) {
          startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
+         finish();
         }
 
         // Hooks

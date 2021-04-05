@@ -7,6 +7,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -56,6 +60,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     Product product;
     StorageReference storageReference;
     Uri imageUri = null;
+    // Shake Gesture variables
+    SensorManager sensorManager;
+    private float accelVal;   //Current acceleration value & gravity
+    private float accelLast;    //Last acceleration value & gravity
+    private float shake;    //acceleration value difference from gravity
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -68,6 +77,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         storageReference = storage.getReference();
         fStore = FirebaseFirestore.getInstance();
         dialog = new Dialog(this);
+
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(shakeListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        accelVal = SensorManager.GRAVITY_EARTH;
+        accelLast = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
 
         product = (Product) getIntent().getSerializableExtra("product");
 
@@ -294,5 +309,37 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    /**
+     *  ACCELEROMETER SHAKE:
+     */
+
+    private final SensorEventListener shakeListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            accelLast = accelVal;
+            accelVal = (float) Math.sqrt((double)(x*x + y*y + z*z));
+            float delta = accelVal - accelLast;
+            shake = shake * 0.9f + delta;
+
+            if(shake > 1) {
+                // Open Edit Dialog
+                showEditDialog(product);
+            }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+    };
+
+    /*********************************/
 
 }

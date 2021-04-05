@@ -50,8 +50,8 @@
     <string name="adding_a_product_to_think_about">Adding a Product to Think About</string>
     <string name="add_profile_image">Add Profile Image</string>
     <string name="phone_number">Phone Number</string>
-    <string name="to_manage_product">To manage the products you have added to think about, navigate to the second navigation link marked by a shooping cart (Products). On this screen, you may swipe a product left to delete/forget a product. Alternaively, you may tap on the product you wish to manage and edit it\'s details or mark purchased or delete.</string>
-    <string name="to_share_product">To share a product as part of your wishlist, tap on the specific item you wish to share and press the share button located at the top right hand corner of the products image.</string>
-    <string name="app_details">Do I Need It? helps you check your spending habits and not buy impulsively in today\'s climate of hassle free e-commerce shopping. Find out how much money you spent vs how much you saved by using this application give you time to carefully consider whether you really need to purchase an item.</string>
-    <string name="add_product_details">To add a new product to think about, simply tap on the add button located at the centre of bottom navigation bar. Once you do this, aa add product dialog appears which alows you to enter the product details and attach an image to save it.</string>
+    <string name="to_manage_product">To manage your added products, navigate to the second link marked by a shopping cart (Products). On this screen, you may swipe a product left to delete/forget it or right to mark it purchased. Alternatively, you may tap on the product you wish to manage and edit it\'s details or mark purchased or delete.</string>
+    <string name="to_share_product">To share a product, tap on the specific item you wish to share and press the share button located at the top right hand corner of the product\'s image.</string>
+    <string name="app_details">Do I Need It? helps you check your spending habits in today\'s climate of hassle free e-commerce shopping. Find out how much money you spent vs how much you saved by using this handy app.</string>
+    <string name="add_product_details">To add a new product to think about, simply tap on the add button located at the centre of bottom navigation bar. Once you do this, an add product dialog appears which allows you to enter and save the product details and attach an image along with it.</string>
 </resources>
